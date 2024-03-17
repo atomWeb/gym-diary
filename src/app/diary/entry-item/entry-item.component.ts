@@ -15,6 +15,7 @@ export class EntryItemComponent {
   @Output() deleteEvent = new EventEmitter<string>();
 
   delete() {
+    console.log(this.exerciseSet.id)
     this.deleteEvent.emit(this.exerciseSet.id);
   }
   newRep() {

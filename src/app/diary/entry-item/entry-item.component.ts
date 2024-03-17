@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ExerciseSet } from '../interfaces/exercise-set';
 
@@ -11,4 +11,18 @@ import { ExerciseSet } from '../interfaces/exercise-set';
 })
 export class EntryItemComponent {
   @Input('exercise-set') exerciseSet!: ExerciseSet;
+  @Output() newRepEvent = new EventEmitter<ExerciseSet>();
+  @Output() deleteEvent = new EventEmitter<string>();
+
+  delete() {
+    this.deleteEvent.emit(this.exerciseSet.id);
+  }
+  newRep() {
+    const reps = ++this.exerciseSet.reps;
+    const newItem: ExerciseSet = {
+      ...this.exerciseSet,
+      reps,
+    };
+    this.newRepEvent.emit(newItem);
+  }
 }

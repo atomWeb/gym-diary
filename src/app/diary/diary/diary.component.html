@@ -5,21 +5,19 @@
     </div>
   </header>
   <main class="mx-auto mt-8 max-w-6xl px-4">
-    <section class="mb-8">
-      <h2 class="mb-4 text-xl font-bold">List of entries</h2>
-      <ul class="rounded border shadow">
-        @for (item of exerciseList; track item.id) {
-        <li>
-          <app-entry-item [exercise-set]="item" />
-        </li>
-        }
-        <!-- more entries here -->
-      </ul>
-    </section>
+    <app-list-entries
+      [exerciseList]="exerciseList"
+      (deleteEvent)="deleteItem($event)"
+      (newRepEvent)="newRep($event)"
+    />
+    <app-new-item-button (newExerciseEvent)="addExercise($event)" />
+    <br />
+    <br />
     <button
       class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+      (click)="newList()"
     >
-      Add new entry
+      Server Sync
     </button>
   </main>
 </div>

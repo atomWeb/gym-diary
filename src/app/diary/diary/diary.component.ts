@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { ListEntriesComponent } from '../list-entries/list-entries.component';
 import { NewItemButtonComponent } from '../new-item-button/new-item-button.component';
 import { ExerciseSet, ExerciseSetList } from '../interfaces/exercise-set';
@@ -13,6 +14,7 @@ import { ExerciseSetsService } from '../services/exercise-sets.service';
   imports: [ListEntriesComponent, NewItemButtonComponent],
 })
 export default class DiaryComponent implements OnInit {
+  constructor(private router: Router) {}
   ngOnInit(): void {
     this.exerciseSetsService
       .getInitialList()
@@ -28,9 +30,10 @@ export default class DiaryComponent implements OnInit {
       .subscribe((dataApi) => (this.exerciseList = dataApi.items));
   }
   addExercise(newSet: ExerciseSet) {
-    this.exerciseSetsService
-      .addNewItem(newSet)
-      .subscribe((_) => this.newList());
+    this.router.navigate(['/new-reactive']);
+    // this.exerciseSetsService
+    //   .addNewItem(newSet)
+    //   .subscribe((_) => this.newList());
   }
   deleteItem(id: string) {
     console.log(id);

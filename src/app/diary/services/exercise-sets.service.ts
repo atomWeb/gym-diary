@@ -49,7 +49,10 @@ export class ExerciseSetsService {
   //   }`
   //   return this.setList;
   // }
-  addNewItem(item: ExerciseSet): Observable<ExerciseSet> {
+  // addNewItem(item: ExerciseSet): Observable<ExerciseSet> {
+  //   return this.httpClient.post<ExerciseSet>(this.url, item);
+  // }
+  addNewItem(item: Partial<ExerciseSet>): Observable<ExerciseSet> {
     return this.httpClient.post<ExerciseSet>(this.url, item);
   }
   updateItem(id: string, item: ExerciseSet): Observable<ExerciseSet> {

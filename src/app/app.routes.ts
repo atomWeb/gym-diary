@@ -6,6 +6,13 @@ export const routes: Routes = [
     loadComponent: () => import('./diary/diary/diary.component'),
   },
   {
+    path: 'new-reactive',
+    loadComponent: () =>
+      import(
+        './diary/new-entry-form-reactive/new-entry-form-reactive.component'
+      ),
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',

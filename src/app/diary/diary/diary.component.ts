@@ -1,29 +1,40 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ListEntriesComponent } from '../list-entries/list-entries.component';
 import { NewItemButtonComponent } from '../new-item-button/new-item-button.component';
 import { ExerciseSet, ExerciseSetList } from '../interfaces/exercise-set';
 import { ExerciseSetsService } from '../services/exercise-sets.service';
+import { AuthService } from '../../login/auth.service';
 
 @Component({
   selector: 'app-diary',
   standalone: true,
   templateUrl: './diary.component.html',
   styleUrl: './diary.component.css',
-  providers: [ExerciseSetsService],
+  //providers: [ExerciseSetsService], // Lo he metido en el app.config
   imports: [ListEntriesComponent, NewItemButtonComponent],
 })
 export default class DiaryComponent implements OnInit {
-  constructor(private router: Router) {}
-  ngOnInit(): void {
-    this.exerciseSetsService
-      .getInitialList()
-      .subscribe((dataApi) => (this.exerciseList = dataApi.items));
-  }
-  // constructor(private exerciseSetsService: ExerciseSetsService) {}
   private exerciseSetsService = inject(ExerciseSetsService);
   //exerciseList = this.exerciseSetsService.getInitialList();
   exerciseList!: ExerciseSetList;
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  ngOnInit(): void {
+    this.route.data.subscribe(({ diaryApi }) => {
+      this.exerciseList = diaryApi.items;
+    });
+  }
+  // constructor(private router: Router) {}
+  // ngOnInit(): void {
+  //   this.exerciseSetsService
+  //     .getInitialList()
+  //     .subscribe((dataApi) => (this.exerciseList = dataApi.items));
+  // }
+  // constructor(private exerciseSetsService: ExerciseSetsService) {}
+
   newList() {
     this.exerciseSetsService
       .refreshList()
@@ -72,4 +83,8 @@ export default class DiaryComponent implements OnInit {
   // // itemTrackBy(index: number, item: ExerciseSet) {
   //   return item.id;
   // }
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['./login']);
+  }
 }

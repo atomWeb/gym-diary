@@ -11,19 +11,23 @@ import { ExerciseSet } from '../interfaces/exercise-set';
 })
 export class EntryItemComponent {
   @Input('exercise-set') exerciseSet!: ExerciseSet;
-  @Output() newRepEvent = new EventEmitter<ExerciseSet>();
+  // @Output() newRepEvent = new EventEmitter<ExerciseSet>();
+  @Output() editEvent = new EventEmitter<ExerciseSet>();
   @Output() deleteEvent = new EventEmitter<string>();
 
   delete() {
-    console.log(this.exerciseSet.id)
     this.deleteEvent.emit(this.exerciseSet.id);
   }
-  newRep() {
-    const reps = ++this.exerciseSet.reps;
-    const newItem: ExerciseSet = {
-      ...this.exerciseSet,
-      reps,
-    };
-    this.newRepEvent.emit(newItem);
+
+  editEntry() {
+    this.editEvent.emit(this.exerciseSet);
   }
+  // newRep() {
+  //   const reps = ++this.exerciseSet.reps;
+  //   const newItem: ExerciseSet = {
+  //     ...this.exerciseSet,
+  //     reps,
+  //   };
+  //   this.newRepEvent.emit(newItem);
+  // }
 }

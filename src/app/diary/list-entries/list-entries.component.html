@@ -6,7 +6,7 @@
       <app-entry-item
         [exercise-set]="item"
         (deleteEvent)="deleteEvent.emit($event)"
-        (newRepEvent)="newRepEvent.emit($event)"
+        (editEvent)="editEvent.emit($event)"
       />
     </li>
     }

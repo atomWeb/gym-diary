@@ -9,7 +9,7 @@
     <app-list-entries
       [exerciseList]="exerciseList"
       (deleteEvent)="deleteItem($event)"
-      (newRepEvent)="newRep($event)"
+      (editEvent)="editEntry($event)"
     />
     <app-new-item-button (newExerciseEvent)="addExercise($event)" />
     <br />

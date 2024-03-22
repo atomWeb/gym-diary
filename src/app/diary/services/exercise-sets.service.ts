@@ -1,26 +1,43 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
 import {
   ExerciseSet,
   ExerciseSetList,
   ExerciseSetListAPI,
 } from '../interfaces/exercise-set';
-import { Observable } from 'rxjs';
+import { SkipLoading } from '../../loading-overlay/load.interceptor';
 
 @Injectable(/*{
   providedIn: 'root',
 }*/)
 export class ExerciseSetsService {
   private httpClient = inject(HttpClient);
-  private url = 'http://localhost:3000/diary';
+  private url = 'diary';
+  // private url = 'http://localhost:3000/diary';
+  // private setList?: ExerciseSetList;
+  // constructor() {}
 
-  private setList?: ExerciseSetList;
-  constructor() {}
   getInitialList(): Observable<ExerciseSetListAPI> {
-    return this.httpClient.get<ExerciseSetListAPI>(this.url);
+    const headers = new HttpHeaders().set('X-TELEMETRY', 'true');
+    return this.httpClient.get<ExerciseSetListAPI>(this.url, { headers });
   }
   refreshList(): Observable<ExerciseSetListAPI> {
     return this.httpClient.get<ExerciseSetListAPI>(this.url);
+  }
+
+  addNewItem(item: Partial<ExerciseSet>): Observable<ExerciseSet> {
+    return this.httpClient.post<ExerciseSet>(this.url, item);
+  }
+  updateItem(id: string, item: Partial<ExerciseSet>): Observable<ExerciseSet> {
+    return this.httpClient.put<ExerciseSet>(`${this.url}/${id}`, item);
+  }
+  getItem(id: string): Observable<ExerciseSet> {
+    return this.httpClient.get<ExerciseSet>(`${this.url}/${id}`);
+  }
+  deleteItem(id: string): Observable<boolean> {
+    console.log(id);
+    return this.httpClient.delete<boolean>(`${this.url}/${id}`);
   }
   // getInitialList(): ExerciseSetList {
   //   this.setList = [
@@ -52,17 +69,4 @@ export class ExerciseSetsService {
   // addNewItem(item: ExerciseSet): Observable<ExerciseSet> {
   //   return this.httpClient.post<ExerciseSet>(this.url, item);
   // }
-  addNewItem(item: Partial<ExerciseSet>): Observable<ExerciseSet> {
-    return this.httpClient.post<ExerciseSet>(this.url, item);
-  }
-  updateItem(id: string, item: Partial<ExerciseSet>): Observable<ExerciseSet> {
-    return this.httpClient.put<ExerciseSet>(`${this.url}/${id}`, item);
-  }
-  getItem(id: string): Observable<ExerciseSet> {
-    return this.httpClient.get<ExerciseSet>(`${this.url}/${id}`);
-  }
-  deleteItem(id: string): Observable<boolean> {
-    console.log(id);
-    return this.httpClient.delete<boolean>(`${this.url}/${id}`);
-  }
 }

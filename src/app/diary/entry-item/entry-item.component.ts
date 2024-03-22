@@ -22,6 +22,7 @@ export class EntryItemComponent {
   editEntry() {
     this.editEvent.emit(this.exerciseSet);
   }
+
   // newRep() {
   //   const reps = ++this.exerciseSet.reps;
   //   const newItem: ExerciseSet = {

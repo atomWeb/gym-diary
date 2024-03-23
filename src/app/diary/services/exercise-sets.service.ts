@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
 import {
   ExerciseSet,
   ExerciseSetList,
   ExerciseSetListAPI,
 } from '../interfaces/exercise-set';
-import { SkipLoading } from '../../loading-overlay/load.interceptor';
+// import { SkipLoading } from '../../loading-overlay/load.interceptor';
 
 @Injectable(/*{
   providedIn: 'root',
@@ -18,12 +18,16 @@ export class ExerciseSetsService {
   // private setList?: ExerciseSetList;
   // constructor() {}
 
-  getInitialList(): Observable<ExerciseSetListAPI> {
+  getInitialList(): Observable<ExerciseSetList> {
     const headers = new HttpHeaders().set('X-TELEMETRY', 'true');
-    return this.httpClient.get<ExerciseSetListAPI>(this.url, { headers });
+    return this.httpClient
+      .get<ExerciseSetListAPI>(this.url, { headers })
+      .pipe(map((api) => api?.items));
   }
-  refreshList(): Observable<ExerciseSetListAPI> {
-    return this.httpClient.get<ExerciseSetListAPI>(this.url);
+  refreshList(): Observable<ExerciseSetList> {
+    return this.httpClient
+      .get<ExerciseSetListAPI>(this.url)
+      .pipe(map((api) => api?.items));
   }
 
   addNewItem(item: Partial<ExerciseSet>): Observable<ExerciseSet> {

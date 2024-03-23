@@ -23,8 +23,8 @@ export default class DiaryComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ diaryApi }) => {
-      this.exerciseList = diaryApi.items;
+    this.route.data.subscribe(({ exerciseList }) => {
+      this.exerciseList = exerciseList;
     });
   }
   // constructor(private router: Router) {}
@@ -38,7 +38,7 @@ export default class DiaryComponent implements OnInit {
   newList() {
     this.exerciseSetsService
       .refreshList()
-      .subscribe((dataApi) => (this.exerciseList = dataApi.items));
+      .subscribe((exerciseList) => (this.exerciseList = exerciseList));
   }
   addExercise(newSet: ExerciseSet) {
     this.router.navigate(['/entry']);

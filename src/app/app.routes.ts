@@ -11,7 +11,8 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./diary/diary/diary.component'),
-    resolve: { diaryApi: diaryResolver },
+    title: 'Diary',
+    resolve: { exerciseList: diaryResolver },
     canActivate: [authGuard],
   },
   {

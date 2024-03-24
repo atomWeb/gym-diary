@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
 import {
@@ -14,15 +14,20 @@ import {
 export class ExerciseSetsService {
   private httpClient = inject(HttpClient);
   private url = 'diary';
+  exerciseList = signal<ExerciseSetList>([] as ExerciseSetList);
   // private url = 'http://localhost:3000/diary';
   // private setList?: ExerciseSetList;
   // constructor() {}
 
-  getInitialList(): Observable<ExerciseSetList> {
+  getInitialList(): void {
     const headers = new HttpHeaders().set('X-TELEMETRY', 'true');
-    return this.httpClient
+    this.httpClient
       .get<ExerciseSetListAPI>(this.url, { headers })
-      .pipe(map((api) => api?.items));
+      .pipe(map((api) => api?.items))
+      .subscribe((list) => this.exerciseList.set(list));
+    // return this.httpClient
+    //   .get<ExerciseSetListAPI>(this.url, { headers })
+    //   .pipe(map((api) => api?.items));
   }
   refreshList(): Observable<ExerciseSetList> {
     return this.httpClient
@@ -39,10 +44,17 @@ export class ExerciseSetsService {
   getItem(id: string): Observable<ExerciseSet> {
     return this.httpClient.get<ExerciseSet>(`${this.url}/${id}`);
   }
-  deleteItem(id: string): Observable<boolean> {
-    console.log(id);
-    return this.httpClient.delete<boolean>(`${this.url}/${id}`);
+  deleteItem(id: string) {
+    this.httpClient.delete<boolean>(`${this.url}/${id}`).subscribe(() => {
+      this.exerciseList.update((list) =>
+        list.filter((exerciseSet) => exerciseSet.id !== id)
+      );
+    });
   }
+  // deleteItem(id: string): Observable<boolean> {
+  //   console.log(id);
+  //   return this.httpClient.delete<boolean>(`${this.url}/${id}`);
+  // }
   // getInitialList(): ExerciseSetList {
   //   this.setList = [
   //     { id: 1, date: new Date(), exercise: 'Deadlift', reps: 15, sets: 3 },

@@ -3,7 +3,7 @@ import { ResolveFn } from '@angular/router';
 import { ExerciseSet, ExerciseSetList } from './interfaces/exercise-set';
 import { ExerciseSetsService } from './services/exercise-sets.service';
 
-export const diaryResolver: ResolveFn<ExerciseSetList> = (route, state) => {
+export const diaryResolver: ResolveFn<void> = (route, state) => {
   const exerciseSetsService = inject(ExerciseSetsService);
   return exerciseSetsService.getInitialList();
 };

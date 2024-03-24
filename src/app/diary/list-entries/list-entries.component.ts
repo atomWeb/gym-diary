@@ -13,8 +13,10 @@ import { ExerciseSetsService } from '../services/exercise-sets.service';
 export class ListEntriesComponent {
   // private exerciseSetsService = inject(ExerciseSetsService);
   //exerciseList = this.exerciseSetsService.getInitialList();
-  @Input() exerciseList!: ExerciseSetList;
+  // @Input() exerciseList!: ExerciseSetList;
   // @Output() newRepEvent = new EventEmitter<ExerciseSet>();
   @Output() editEvent = new EventEmitter<ExerciseSet>();
   @Output() deleteEvent = new EventEmitter<string>();
+  private exerciseSetsService = inject(ExerciseSetsService);
+  exerciseList = this.exerciseSetsService.exerciseList;
 }

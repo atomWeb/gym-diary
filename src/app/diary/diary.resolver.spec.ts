@@ -2,9 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
 import { diaryResolver } from './diary.resolver';
+import { ExerciseSetList } from './interfaces/exercise-set';
 
 describe('diaryResolver', () => {
-  const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 
+  const executeResolver: ResolveFn<ExerciseSetList> = (...resolverParameters) =>
       TestBed.runInInjectionContext(() => diaryResolver(...resolverParameters));
 
   beforeEach(() => {

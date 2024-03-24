@@ -3,7 +3,7 @@
     class="flex items-center justify-between space-x-20 py-4 text-white bg-blue-500"
   >
     <div class="mx-6 max-w-6xl">
-      <h1 class="text-2xl font-bold">Workout diary</h1>
+      <h1 class="text-2xl font-bold">Workout diary - Total Volume: {{volume()}}</h1>
     </div>
     <nav class="items-center px-4 mx-2">
       <a (click)="logout()" class="cursor-pointer">
@@ -31,19 +31,39 @@
   </header>
   <main class="mx-auto mt-8 max-w-6xl px-4">
     <!-- <app-list-entries [exerciseList]="exerciseList" /> -->
+    <!-- @defer(on hover(trigger)) {
     <app-list-entries
       [exerciseList]="exerciseList"
       (deleteEvent)="deleteItem($event)"
       (editEvent)="editEntry($event)"
     />
+    } -->
+    @defer {
+    <!-- <app-list-entries
+      [exerciseList]="exerciseList"
+      (deleteEvent)="deleteItem($event)"
+      (editEvent)="editEntry($event)"
+    /> -->
+    <app-list-entries
+      (deleteEvent)="deleteItem($event)"
+      (editEvent)="editEntry($event)"
+    />
+    } @loading {
+    <div>Loading</div>
+    } @placeholder {
+    <div>PlaceHolder</div>
+    } @error {
+    <div>Error</div>
+    }
     <app-new-item-button (newExerciseEvent)="addExercise($event)" />
     <br />
-    <!-- <br />
+    <br />
     <button
+      #trigger
       class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
       (click)="newList()"
     >
       Server Sync
-    </button> -->
+    </button>
   </main>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, computed, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListEntriesComponent } from '../list-entries/list-entries.component';
 import { NewItemButtonComponent } from '../new-item-button/new-item-button.component';
@@ -23,9 +23,10 @@ export default class DiaryComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ exerciseList }) => {
-      this.exerciseList = exerciseList;
-    });
+    this.exerciseSetsService.getInitialList();
+    // this.route.data.subscribe(({ exerciseList }) => {
+    //   this.exerciseList = exerciseList;
+    // });
   }
   // constructor(private router: Router) {}
   // ngOnInit(): void {
@@ -47,16 +48,25 @@ export default class DiaryComponent implements OnInit {
     //   .subscribe((_) => this.newList());
   }
   deleteItem(id: string) {
-    this.exerciseSetsService.deleteItem(id).subscribe(() => {
-      this.exerciseList = this.exerciseList.filter(
-        (exerciseSet) => exerciseSet.id !== id
-      );
-    });
+    // this.exerciseSetsService.deleteItem(id).subscribe(() => {
+    //   this.exerciseList = this.exerciseList.filter(
+    //     (exerciseSet) => exerciseSet.id !== id
+    //   );
+    // });
+    this.exerciseSetsService.deleteItem(id);
   }
   editEntry(updateSet: ExerciseSet) {
     const id = updateSet.id ?? '';
     this.router.navigate([`/entry/${id}`]);
   }
+  volume = computed<number>(() =>
+    this.exerciseSetsService
+      .exerciseList()
+      .reduce(
+        (volume, exerciseSet) => volume + exerciseSet.reps * exerciseSet.sets,
+        0
+      )
+  );
   // newRep(updateSet: ExerciseSet) {
   //   const id = updateSet.id ?? '';
   //   this.exerciseSetsService.updateItem(id, updateSet).subscribe();

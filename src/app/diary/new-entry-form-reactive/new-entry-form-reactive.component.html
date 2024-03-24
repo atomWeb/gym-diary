@@ -60,7 +60,7 @@
       <div class="mt-1 text-red-500">
         Sets is required and must be a positive number.
       </div>
-      } @if (entryForm.get('sets')?.errors?.['isNotMultiple'] &&
+      } @else if (entryForm.get('sets')?.errors?.['isNotMultiple'] &&
       entryForm.get('sets')?.touched) {
       <div class="mt-1 text-red-500">
         Sets is required and must be multiple of 2.
